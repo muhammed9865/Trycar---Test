@@ -63,15 +63,17 @@ dependencies {
     implementation(libs.androidx.viewmodel)
     implementation(libs.androidx.work)
     implementation(libs.androidx.navigation)
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
 
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.room)
-    implementation(libs.androidx.lifecycle.runtime.compose.android)
     ksp(libs.room.compiler)
 
     implementation(libs.hilt)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.work)
     ksp(libs.hilt.compiler)
+    ksp(libs.hilt.androidx.compiler)
 
     implementation(libs.coil.compose)
 
