@@ -14,8 +14,6 @@ import com.salman.trycar_test.data.worker.WorkerConstants
 import com.salman.trycar_test.domain.model.PostDetails
 import com.salman.trycar_test.domain.model.PostItem
 import com.salman.trycar_test.domain.repository.PostRepository
-import com.salman.trycar_test.logger.logDebug
-import com.salman.trycar_test.logger.logInfo
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
@@ -36,17 +34,11 @@ class PostRepositoryImpl @Inject constructor(
         logDebug("Fetching posts")
         return coroutineScope {
             return@coroutineScope flow {
-                logDebug("Fetching cached posts")
                 val cachedPosts = localSource.getPosts()
-                logDebug("Fetching remote posts")
-                val remotePosts = remoteSource.getPosts()
-
-
-                logInfo("Cached posts fetched: ${cachedPosts.isNotEmpty()}")
                 emit(cachedPosts.map { it.toDomain() })
 
                 // Update cache with remote posts
-                logInfo("Remote posts fetched: ${remotePosts.isSuccess}")
+                val remotePosts = remoteSource.getPosts()
                 remotePosts.onSuccess { posts ->
                     cacheRemotePosts(posts)
                     emit(posts.map { it.toDomain() })
