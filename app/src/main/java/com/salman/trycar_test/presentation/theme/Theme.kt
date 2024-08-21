@@ -1,4 +1,4 @@
-package com.salman.trycar_test.ui.theme
+package com.salman.trycar_test.presentation.theme
 
 import android.app.Activity
 import android.os.Build

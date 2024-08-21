@@ -1,4 +1,4 @@
-package com.salman.trycar_test.ui.theme
+package com.salman.trycar_test.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
