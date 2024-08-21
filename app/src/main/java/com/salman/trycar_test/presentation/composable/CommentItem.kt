@@ -1,5 +1,6 @@
 package com.salman.trycar_test.presentation.composable
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,10 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
+import com.salman.trycar_test.R
 import com.salman.trycar_test.domain.model.CommentItem
 import com.salman.trycar_test.presentation.theme.Dimen
 import com.salman.trycar_test.presentation.theme.TrycarTestTheme
@@ -58,13 +61,23 @@ private fun UserInfo(
         SubcomposeAsyncImage(
             model = imageUrl,
             contentDescription = "User image",
-            loading = { CircularProgressIndicator(
-                strokeWidth = 4.dp,
-                strokeCap = StrokeCap.Round
-            ) },
-            modifier = Modifier.size(45.dp).clip(CircleShape),
+            loading = {
+                CircularProgressIndicator(
+                    strokeWidth = 4.dp,
+                    strokeCap = StrokeCap.Round
+                )
+            },
+            error = {
+                Image(
+                    painter = painterResource(id = R.drawable.avatar_placeholder),
+                    contentDescription = "User image",
+                )
+            },
+            modifier = Modifier
+                .size(45.dp)
+                .clip(CircleShape),
 
-        )
+            )
         InfoTexts(name = name, email = email)
     }
 }
