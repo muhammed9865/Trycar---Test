@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.salman.trycar_test.domain.model.CommentItem
+import com.salman.trycar_test.presentation.theme.Dimen
 import com.salman.trycar_test.presentation.theme.TrycarTestTheme
 
 /**
@@ -31,7 +32,7 @@ fun CommentUIItem(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(Dimen.spaceSmall.dp)
     ) {
         UserInfo(name = comment.name, email = comment.email, imageUrl = comment.userImage)
         Text(
@@ -74,7 +75,7 @@ fun InfoTexts(
     name: String,
     email: String,
 ) {
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(Dimen.spaceExtraSmall.dp)) {
         Text(
             text = name, style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),

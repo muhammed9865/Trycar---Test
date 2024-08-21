@@ -37,7 +37,7 @@ private fun FavoritesContent(
     state: FavoritesUiState,
     onPostClicked: (PostItem) -> Unit = {}
 ) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier.fillMaxSize()) {
         if (state.isLoading) {
             LoadingIndicator(text = stringResource(id = R.string.loading_posts))
         } else {

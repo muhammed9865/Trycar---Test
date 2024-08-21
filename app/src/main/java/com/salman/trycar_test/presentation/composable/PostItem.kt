@@ -105,7 +105,8 @@ private fun PostItemPreview() {
         1,
         "Hello" +
                 "asdasdqw qw dqwdqw eqwe qwd asd qweqwe asdqweqeqweqweqweqweqwdqwd asdqwqweq weqw eqwe qwe",
-        "This is a test Test asdawewaeasd asdqwdas dasdasdasda sdwqe qeaqweqwe qw asdasd asd asd asdqwdqwd qsadasdsade"
+        "This is a test Test asdawewaeasd asdqwdas dasdasdasda sdwqe qeaqweqwe qw asdasd asd asd asdqwdqwd qsadasdsade",
+        isFavorite = false
     )
     TrycarTestTheme {
         PostUIItem(post = post)
