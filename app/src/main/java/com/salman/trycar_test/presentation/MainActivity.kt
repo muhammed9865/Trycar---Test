@@ -12,10 +12,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.salman.trycar_test.presentation.navigation.AppNavigation
+import com.salman.trycar_test.presentation.navigation.LocalNavigator
 import com.salman.trycar_test.presentation.navigation.TopNavigationAppBar
 import com.salman.trycar_test.presentation.theme.TrycarTestTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,12 +38,14 @@ class MainActivity : ComponentActivity() {
                             TopNavigationAppBar(navController = navController)
                         }
                     ) {
-                        AppNavigation(
-                            navController = navController,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(top = it.calculateTopPadding())
-                        )
+                        CompositionLocalProvider(value = LocalNavigator provides navController) {
+                            AppNavigation(
+                                navController = navController,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(top = it.calculateTopPadding())
+                            )
+                        }
                     }
                 }
             }
