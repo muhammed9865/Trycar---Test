@@ -71,6 +71,8 @@ dependencies {
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
 
+    implementation(libs.coil.compose)
+
     testImplementation(libs.bundles.unitTest)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
