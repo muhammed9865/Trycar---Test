@@ -66,9 +66,11 @@ dependencies {
 
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.room)
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
     ksp(libs.room.compiler)
 
     implementation(libs.hilt)
+    implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
 
     implementation(libs.coil.compose)
