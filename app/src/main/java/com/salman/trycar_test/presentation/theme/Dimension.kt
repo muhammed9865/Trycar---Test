@@ -5,4 +5,6 @@ package com.salman.trycar_test.presentation.theme
  */
 object Dimen {
     const val contentPadding = 16
+    const val spaceMedium = 8
+    const val spaceExtra = 18
 }

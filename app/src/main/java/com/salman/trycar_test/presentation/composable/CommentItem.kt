@@ -25,7 +25,7 @@ import com.salman.trycar_test.presentation.theme.TrycarTestTheme
  * Created by Muhammed Salman email(mahmadslman@gmail.com) on 8/21/2024.
  */
 @Composable
-fun CommentItem(
+fun CommentUIItem(
     modifier: Modifier = Modifier,
     comment: CommentItem,
 ) {
@@ -94,7 +94,7 @@ fun InfoTexts(
 @Composable
 private fun CommentItemPreview() {
     TrycarTestTheme {
-        CommentItem(
+        CommentUIItem(
             comment = CommentItem(
                 id = 1,
                 userImage = "https://i.pravatar.cc/ ",

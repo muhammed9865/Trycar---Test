@@ -2,8 +2,10 @@
     <string name="app_name">Trycar - Test</string>
     <string name="hello_there">Hello there!</string>
     <string name="loading_posts">Loading posts...</string>
-    <string name="no_posts">Couldn\'t fetch your feed.. Check your internet or try again later</string>
+    <string name="no_posts">Couldn\'t fetch your feed.. Check your internet connection or try again later</string>
     <string name="post">Post</string>
     <string name="posts">Posts</string>
     <string name="favorites">Favorites</string>
+    <string name="loading_comments">Loading comments</string>
+    <string name="empty_favorites">You don\'t have any favorite posts.\nAdd new posts and you will see them here</string>
 </resources>
