@@ -2,11 +2,8 @@ package com.salman.trycar_test.domain.usecase
 
 import com.salman.trycar_test.domain.model.PostItem
 import com.salman.trycar_test.domain.repository.PostRepository
-import com.salman.trycar_test.domain.util.FakeModel.fakePosts
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
