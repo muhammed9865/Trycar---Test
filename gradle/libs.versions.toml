@@ -11,7 +11,7 @@ composeBom = "2024.06.00"
 retrofit = "2.11.0"
 retrofit-logger = "4.12.0"
 hilt = "2.51"
-hilt-navigation-compose = "1.0.0"
+hilt-common = "1.2.0"
 coil = "2.7.0"
 room = "2.6.1"
 ksp = "2.0.10-1.0.24"
@@ -46,8 +46,10 @@ retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-
 retrofit-logger = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "retrofit-logger" }
 
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-common" }
+hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hilt-common" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-androidx-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hilt-common" }
 
 room = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
