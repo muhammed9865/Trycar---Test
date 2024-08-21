@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.viewmodel)
+    implementation(libs.androidx.work)
+    implementation(libs.androidx.navigation)
 
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.room)
