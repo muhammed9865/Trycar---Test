@@ -19,3 +19,5 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class com.salman.trycar_test.data.source.local.entity.** { *; }
+-keep class com.salman.trycar_test.data.source.remote.dto.** { *; }
