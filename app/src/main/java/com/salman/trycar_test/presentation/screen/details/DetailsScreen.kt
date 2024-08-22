@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
@@ -23,8 +23,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,6 +33,7 @@ import com.salman.trycar_test.domain.model.CommentItem
 import com.salman.trycar_test.presentation.composable.CommentUIItem
 import com.salman.trycar_test.presentation.composable.LoadingIndicator
 import com.salman.trycar_test.presentation.composable.Screen
+import com.salman.trycar_test.presentation.core.LocalConnectivityManager
 import com.salman.trycar_test.presentation.theme.Dimen
 import com.salman.trycar_test.presentation.theme.Dimen.spaceExtra
 import com.salman.trycar_test.presentation.theme.Dimen.spaceMedium
@@ -57,6 +58,8 @@ private fun DetailsContent(
     state: DetailsUiState,
     onFavoriteClick: () -> Unit = {}
 ) {
+    val connectivityManager = LocalConnectivityManager.current
+    val isInternetConnected by connectivityManager.isConnected.collectAsStateWithLifecycle()
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = onFavoriteClick) {
@@ -81,6 +84,7 @@ private fun DetailsContent(
             )
             CommentsSection(
                 isLoading = state.isLoadingComments,
+                isInternetConnected = isInternetConnected,
                 comments = state.comments,
             )
         }
@@ -117,6 +121,7 @@ private fun PostContent(
 private fun CommentsSection(
     modifier: Modifier = Modifier,
     isLoading: Boolean,
+    isInternetConnected: Boolean,
     comments: List<CommentItem>
 ) {
     if (isLoading) {
@@ -127,30 +132,60 @@ private fun CommentsSection(
         }
     }
 
-    LazyColumn(
+    Box(
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(Dimen.contentPadding.dp),
+        contentAlignment = Alignment.Center
     ) {
-        items(comments, key = { it.id }) { comment ->
-            CommentUIItem(comment = comment, modifier = Modifier.padding(bottom = spaceExtra.dp))
+        LazyColumn(
+            contentPadding = PaddingValues(Dimen.contentPadding.dp),
+        ) {
+            items(comments, key = { it.id }) { comment ->
+                CommentUIItem(
+                    comment = comment,
+                    modifier = Modifier.padding(bottom = spaceExtra.dp)
+                )
+            }
+
+
+            item {
+                LoadingCommentsIndicator(
+                    isInternetConnected = isInternetConnected,
+                    isLoading = isLoading,
+                    isCommentListEmpty = comments.isEmpty()
+                )
+            }
         }
     }
 }
 
-private fun Modifier.dynamicHeight(lazyListState: LazyListState): Modifier = this.layout { measurable, constraints ->
-    // Calculate scroll percentage
-    val scrollOffset = lazyListState.firstVisibleItemScrollOffset
-    val totalHeight = constraints.maxHeight
-    val dynamicHeight = if (scrollOffset > 0) {
-        // Reduce the height based on scroll percentage
-        totalHeight - (scrollOffset * 0.5f).toInt().coerceAtLeast(0)
-    } else {
-        totalHeight
+@Composable
+private fun LoadingCommentsIndicator(
+    modifier: Modifier = Modifier,
+    isInternetConnected: Boolean,
+    isLoading: Boolean,
+    isCommentListEmpty: Boolean,
+) {
+    val errorMessageStringId = when {
+        isLoading -> null
+        isCommentListEmpty && isInternetConnected.not() -> R.string.empty_comments_no_internet
+        isCommentListEmpty && isInternetConnected -> R.string.post_have_no_comments
+        else -> null
     }
 
-    // Measure the composable with the dynamic height
-    val placeable = measurable.measure(constraints.copy(maxHeight = dynamicHeight))
-    layout(constraints.maxWidth, dynamicHeight) {
-        placeable.placeRelative(0, 0)
+    if (errorMessageStringId != null) {
+        Text(
+            text = stringResource(errorMessageStringId),
+            modifier = modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.bodySmall,
+            textAlign = TextAlign.Center
+        )
+    } else {
+        if (isLoading)
+            LoadingIndicator(
+                text = stringResource(id = R.string.loading_comments),
+                modifier = modifier.fillMaxWidth()
+            )
     }
+
 }

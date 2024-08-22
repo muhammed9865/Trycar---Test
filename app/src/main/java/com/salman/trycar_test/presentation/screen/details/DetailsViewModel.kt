@@ -8,9 +8,14 @@ import com.salman.trycar_test.domain.model.PostDetails
 import com.salman.trycar_test.domain.usecase.GetPostCommentsUseCase
 import com.salman.trycar_test.domain.usecase.GetPostDetailsUseCase
 import com.salman.trycar_test.domain.usecase.TogglePostFavoriteStateUseCase
+import com.salman.trycar_test.logger.logDebug
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
