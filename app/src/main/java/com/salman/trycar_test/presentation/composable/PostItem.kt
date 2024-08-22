@@ -11,15 +11,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.salman.trycar_test.R
 import com.salman.trycar_test.domain.model.PostItem
 import com.salman.trycar_test.presentation.theme.Dimen
 import com.salman.trycar_test.presentation.theme.TrycarTestTheme
@@ -32,7 +35,9 @@ import com.salman.trycar_test.presentation.theme.TrycarTestTheme
 fun PostsList(
     posts: List<PostItem>,
     emptyListMessage: String,
-    onPostClicked: (PostItem) -> Unit = {}
+    actionButtonText: String = stringResource(id = R.string.retry),
+    onPostClicked: (PostItem) -> Unit = {},
+    onActionClicked: () -> Unit = {},
 ) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = Dimen.contentPadding.dp)
@@ -44,16 +49,38 @@ fun PostsList(
         }
         if (posts.isEmpty()) {
             item {
-                Text(
-                    text = emptyListMessage,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
+                EmptyListMessage(
+                    message = emptyListMessage,
+                    onAction = onActionClicked,
+                    buttonText = actionButtonText
                 )
             }
         }
     }
 }
 
+@Composable
+private fun EmptyListMessage(
+    modifier: Modifier = Modifier,
+    message: String,
+    buttonText: String = stringResource(id = R.string.retry),
+    onAction: () -> Unit = {},
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = message,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+        TextButton(onClick = onAction) {
+            Text(text = buttonText)
+        }
+    }
+}
 
 
 @Composable
