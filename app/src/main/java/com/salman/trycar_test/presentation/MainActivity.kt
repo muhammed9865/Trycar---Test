@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -16,6 +15,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.salman.trycar_test.presentation.core.InternetConnectivityManager
+import com.salman.trycar_test.presentation.core.LocalConnectivityManager
 import com.salman.trycar_test.presentation.navigation.AppNavigation
 import com.salman.trycar_test.presentation.navigation.LocalNavigator
 import com.salman.trycar_test.presentation.navigation.TopNavigationAppBar
@@ -29,16 +30,20 @@ class MainActivity : ComponentActivity() {
         setContent {
             TrycarTestTheme {
                 val navController = rememberNavController()
+                val connectivityManager = InternetConnectivityManager(this)
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Scaffold(
                         topBar = {
-                            TopNavigationAppBar(navController = navController)
+                            TopNavigationAppBar(navController = navController, connectivityManager)
                         }
                     ) {
-                        CompositionLocalProvider(value = LocalNavigator provides navController) {
+                        CompositionLocalProvider(
+                            LocalNavigator provides navController,
+                            LocalConnectivityManager provides connectivityManager
+                        ) {
                             AppNavigation(
                                 navController = navController,
                                 modifier = Modifier
@@ -50,12 +55,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun Content(tab: Int) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Tab $tab")
     }
 }
