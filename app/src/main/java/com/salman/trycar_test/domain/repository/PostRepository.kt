@@ -13,7 +13,7 @@ interface PostRepository {
      * @return flow of [PostItem] to provide posts as soon as they are available
      * from any data source
      */
-    suspend fun getPosts(): Flow<List<PostItem>>
+    suspend fun getPosts(): Flow<Result<List<PostItem>>>
 
     /**
      * @return flow of [PostItem] to reflect new added favorite posts

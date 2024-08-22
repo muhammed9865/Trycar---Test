@@ -13,7 +13,7 @@ import javax.inject.Inject
 class GetPostsUseCase @Inject constructor(
     private val postRepository: PostRepository,
 ) {
-    suspend operator fun invoke(): Flow<List<PostItem>> {
+    suspend operator fun invoke(): Flow<Result<List<PostItem>>> {
         return withContext(Dispatchers.IO) {
             return@withContext postRepository.getPosts()
         }
