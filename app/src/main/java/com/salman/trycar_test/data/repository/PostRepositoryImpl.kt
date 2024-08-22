@@ -1,6 +1,8 @@
 package com.salman.trycar_test.data.repository
 
+import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
@@ -14,11 +16,9 @@ import com.salman.trycar_test.data.worker.WorkerConstants
 import com.salman.trycar_test.domain.model.PostDetails
 import com.salman.trycar_test.domain.model.PostItem
 import com.salman.trycar_test.domain.repository.PostRepository
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -30,22 +30,25 @@ class PostRepositoryImpl @Inject constructor(
     private val localSource: PostsLocalSource,
     private val workManager: WorkManager,
 ) : PostRepository {
-    override suspend fun getPosts(): Flow<List<PostItem>> {
-        logDebug("Fetching posts")
+    override suspend fun getPosts(): Flow<Result<List<PostItem>>> {
         return coroutineScope {
-            return@coroutineScope flow {
+            channelFlow {
                 val cachedPosts = localSource.getPosts()
-                emit(cachedPosts.map { it.toDomain() })
+                if (cachedPosts.isNotEmpty())
+                    send(Result.success(cachedPosts.map { it.toDomain() }))
+
 
                 // Update cache with remote posts
                 val remotePosts = remoteSource.getPosts()
                 remotePosts.onSuccess { posts ->
                     cacheRemotePosts(posts)
-                    emit(posts.map { it.toDomain() })
+                    send(Result.success(posts.map { it.toDomain() }))
+                }.onFailure {
+                    send(Result.failure(it))
                 }
 
                 // Indicate that the flow has completed
-                currentCoroutineContext().cancel(null)
+                close()
             }
         }
     }
@@ -77,13 +80,18 @@ class PostRepositoryImpl @Inject constructor(
             WorkerConstants.NEW_FAVORITE_STATE to newFavoriteState
         )
         val syncWorker = OneTimeWorkRequestBuilder<SyncFavoriteWorker>()
+            .setConstraints(
+                Constraints(
+                    requiredNetworkType = NetworkType.CONNECTED,
+                )
+            )
             .setInputData(inputData)
             .build()
 
         val workerUniqueName = WorkerConstants.SYNC_FAVORITE_WORKER + postId
         workManager.beginUniqueWork(
             workerUniqueName,
-           ExistingWorkPolicy.REPLACE,
+            ExistingWorkPolicy.REPLACE,
             syncWorker
         ).enqueue()
     }
