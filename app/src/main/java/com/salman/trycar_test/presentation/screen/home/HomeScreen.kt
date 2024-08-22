@@ -69,7 +69,13 @@ fun HomeScreen() {
                 }
 
                 1 -> {
-                    FavoritesScreen()
+                    FavoritesScreen(
+                        onGoToPostsScreen = {
+                            scope.launch {
+                                pagerState.animateScrollToPage(0)
+                            }
+                        }
+                    )
                 }
             }
         }

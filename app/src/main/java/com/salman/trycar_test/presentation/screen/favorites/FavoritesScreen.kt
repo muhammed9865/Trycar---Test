@@ -22,11 +22,17 @@ import com.salman.trycar_test.presentation.navigation.Routes
  * Created by Muhammed Salman email(mahmadslman@gmail.com) on 8/21/2024.
  */
 @Composable
-fun FavoritesScreen(viewModel: FavoritesViewModel = hiltViewModel()) {
+fun FavoritesScreen(
+    viewModel: FavoritesViewModel = hiltViewModel(),
+    onGoToPostsScreen: () -> Unit = {},
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val navigator = LocalNavigator.current
     Screen {
-        FavoritesContent(state = state) {
+        FavoritesContent(
+            state = state,
+            onShowPostsClicked = onGoToPostsScreen
+        ) {
             navigator.navigate(Routes.DETAILS.createRoute(it.id))
         }
     }
@@ -35,13 +41,23 @@ fun FavoritesScreen(viewModel: FavoritesViewModel = hiltViewModel()) {
 @Composable
 private fun FavoritesContent(
     state: FavoritesUiState,
+    onShowPostsClicked: () -> Unit = {},
     onPostClicked: (PostItem) -> Unit = {}
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         if (state.isLoading) {
             LoadingIndicator(text = stringResource(id = R.string.loading_posts))
         } else {
-            PostsList(posts = state.favorites, emptyListMessage = stringResource(id = R.string.empty_favorites), onPostClicked = onPostClicked)
+            val alignment = if (state.favorites.isEmpty()) Alignment.Center else Alignment.TopStart
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = alignment) {
+                PostsList(
+                    posts = state.favorites,
+                    emptyListMessage = stringResource(id = R.string.empty_favorites),
+                    actionButtonText = stringResource(R.string.show_posts),
+                    onActionClicked = onShowPostsClicked,
+                    onPostClicked = onPostClicked
+                )
+            }
         }
     }
 }

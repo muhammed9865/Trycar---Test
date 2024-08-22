@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostsViewModel @Inject constructor(
     private val getPostsUseCase: GetPostsUseCase,
-): ViewModel() {
+) : ViewModel() {
 
     private val mutableState = MutableStateFlow(PostsUiState())
     val state = mutableState.asStateFlow()
@@ -25,7 +25,7 @@ class PostsViewModel @Inject constructor(
         loadPosts()
     }
 
-    private fun loadPosts() = viewModelScope.launch {
+    fun loadPosts() = viewModelScope.launch {
         mutableState.update { it.copy(isLoading = true) }
         getPostsUseCase().collect { posts ->
             mutableState.update { it.copy(posts = posts, isLoading = false) }

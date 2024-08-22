@@ -29,6 +29,7 @@ fun PostsScreen(
     Screen {
         PostsContent(
             state = state,
+            onRetry = viewModel::loadPosts
         ) {
             navigator.navigate(Routes.DETAILS.createRoute(it.id))
         }
@@ -38,13 +39,19 @@ fun PostsScreen(
 @Composable
 private fun PostsContent(
     state: PostsUiState,
+    onRetry: () -> Unit = {},
     onPostClicked: (PostItem) -> Unit = {}
 ) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         if (state.isLoading) {
             LoadingIndicator(text = stringResource(id = R.string.loading_posts))
         } else {
-            PostsList(posts = state.posts, emptyListMessage = stringResource(id = R.string.no_posts), onPostClicked = onPostClicked)
+            PostsList(
+                posts = state.posts,
+                emptyListMessage = stringResource(id = R.string.no_posts),
+                onPostClicked = onPostClicked,
+                onActionClicked = onRetry,
+            )
         }
     }
 }
