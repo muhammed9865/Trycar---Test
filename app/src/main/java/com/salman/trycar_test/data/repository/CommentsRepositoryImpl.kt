@@ -25,8 +25,10 @@ class CommentsRepositoryImpl @Inject constructor(
         return coroutineScope {
             flow {
                 val cachedComments = postsLocalSource.getPostWithComments(postId)
-                // Emit cached comments first
-                emit(cachedComments.comments.map { it.toDomain() })
+                // Emit cached comments first if not empty
+                if (cachedComments.comments.isNotEmpty()) {
+                    emit(cachedComments.comments.map { it.toDomain() })
+                }
 
                 val remoteComments = postsRemoteSource.getPostComments(postId)
                 remoteComments.onSuccess { comments ->
