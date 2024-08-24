@@ -21,19 +21,21 @@ class CommentsRepositoryImpl @Inject constructor(
     private val postsLocalSource: PostsLocalSource,
     private val postsRemoteSource: PostsRemoteSource,
 ): CommentsRepository {
-    override suspend fun getPostComments(postId: Int): Flow<List<CommentItem>> {
+    override suspend fun getPostComments(postId: Int): Flow<Result<List<CommentItem>>> {
         return coroutineScope {
             flow {
                 val cachedComments = postsLocalSource.getPostWithComments(postId)
                 // Emit cached comments first if not empty
                 if (cachedComments.comments.isNotEmpty()) {
-                    emit(cachedComments.comments.map { it.toDomain() })
+                    emit(Result.success(cachedComments.comments.map { it.toDomain() }))
                 }
 
                 val remoteComments = postsRemoteSource.getPostComments(postId)
                 remoteComments.onSuccess { comments ->
                     cacheRemoteComments(comments)
-                    emit(comments.map { it.toDomain() })
+                    emit(Result.success(comments.map { it.toDomain() }))
+                }.onFailure {
+                    emit(Result.failure(it))
                 }
 
                 // Indicate that the flow has completed

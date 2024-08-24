@@ -13,7 +13,7 @@ import javax.inject.Inject
 class GetPostCommentsUseCase @Inject constructor(
     private val commentsRepository: CommentsRepository
 ) {
-    suspend operator fun invoke(postId: Int): Flow<List<CommentItem>> {
+    suspend operator fun invoke(postId: Int): Flow<Result<List<CommentItem>>> {
         return withContext(Dispatchers.IO) {
             commentsRepository.getPostComments(postId)
         }

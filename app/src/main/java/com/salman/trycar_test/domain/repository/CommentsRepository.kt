@@ -15,5 +15,5 @@ interface CommentsRepository {
      * @return flow of [CommentItem] list to provide comments as soon as they are available
      * from any data source
      */
-    suspend fun getPostComments(postId: Int): Flow<List<CommentItem>>
+    suspend fun getPostComments(postId: Int): Flow<Result<List<CommentItem>>>
 }
