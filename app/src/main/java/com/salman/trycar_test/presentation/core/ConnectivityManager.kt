@@ -24,7 +24,7 @@ class InternetConnectivityManager(context: Context) {
     }
 
     private val _isConnected = MutableStateFlow(isInternetConnected())
-    val isConnected =  _isConnected.asStateFlow()
+    val isConnected = _isConnected.asStateFlow()
 
     init {
         val networkRequest = NetworkRequest.Builder()
@@ -43,11 +43,4 @@ class InternetConnectivityManager(context: Context) {
         return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
-    // Function to observe internet connection status
-    fun observeInternetConnection() = isConnected
-
-    // Unregister the network callback to prevent memory leaks
-    fun unregister() {
-        connectivityManager.unregisterNetworkCallback(networkCallback)
-    }
 }

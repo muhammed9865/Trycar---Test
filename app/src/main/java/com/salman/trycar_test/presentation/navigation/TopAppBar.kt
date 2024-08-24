@@ -24,7 +24,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.salman.trycar_test.R
 import com.salman.trycar_test.presentation.core.InternetConnectivityManager
-import com.salman.trycar_test.presentation.core.LocalConnectivityManager
 import com.salman.trycar_test.presentation.theme.Dimen
 
 /**
